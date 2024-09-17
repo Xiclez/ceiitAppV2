@@ -1,23 +1,34 @@
 import React from 'react';
 import { View, Text, ScrollView, TextInput, ImageBackground, TouchableOpacity, FlatList } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons'; // Asegúrate de tener react-native-vector-icons instalado
+import Icon from 'react-native-vector-icons/MaterialIcons'; 
+import { useNavigation } from '@react-navigation/native';
 
 const Home = () => {
-  const ultimosPrestamos = [
-    { id: '1', titulo: 'Coffee break nuevo ingreso', tipo: 'Convivencia', fecha: 'Oct 02', plusIcon: true },
-    { id: '2', titulo: 'Visita museo de Antropología', tipo: 'Cultural', fecha: 'Oct 02', plusIcon: true },
+  const navigation = useNavigation();
+
+  // Próximas devoluciones de equipos
+  const proximasDevoluciones = [
+    { id: '1', titulo: 'SIERRA DE MESA RYOBI', fechaDevolucion: 'Oct 10' },
+    { id: '2', titulo: 'IMPRESORA 3D CREALITY', fechaDevolucion: 'Oct 15' },
   ];
 
+  // Categorías de equipos disponibles
   const categorias = [
-    { id: '1', icon: 'ios-people', name: 'Visitas' },
-    { id: '2', icon: 'ios-heart', name: 'Misas' },
-    { id: '3', icon: 'ios-football', name: 'Deportivos' },
-    { id: '4', icon: 'ios-book', name: 'Cultural' },
+    { id: '1', icon: 'build', name: 'Herramientas' },
+    { id: '2', icon: 'print', name: 'Impresoras 3D' },
+    { id: '3', icon: 'hat', name: 'Sublimación' },
   ];
 
-  const eventosCulturales = [
-    { id: '1', titulo: 'Concierto con causa', fecha: 'Oct 02', plusIcon: true },
-    { id: '2', titulo: 'Misa de Asunción', fecha: 'Oct 02', plusIcon: true },
+  // Equipos más solicitados
+  const equiposPopulares = [
+    { id: '1', titulo: 'Láser de Corte', categoria: 'Máquinas', urlImagen: 'https://m.media-amazon.com/images/I/71zrbVEpAaL.jpg' },
+    { id: '2', titulo: 'Torno de Madera', categoria: 'Herramientas', urlImagen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFd2PLKOm-wZl2e3xD57rL-_D8IENvasFQGQ&s' },
+  ];
+
+  // Préstamos activos
+  const prestamosActivos = [
+    { id: '1', nombre: 'SIERRA DE MESA RYOBI', fechaPrestamo: 'Sep 01', fechaDevolucion: 'Sep 10' },
+    { id: '2', nombre: 'IMPRESORA 3D CREALITY', fechaPrestamo: 'Ago 15', fechaDevolucion: 'Ago 20' },
   ];
 
   return (
@@ -26,6 +37,7 @@ const Home = () => {
       <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
         <Text style={{ color: '#888', fontSize: 12 }}>Marzo 23, 2023</Text>
         <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Hola <Text style={{ color: '#1e3a8a' }}>Juan Ramirez</Text> 👋</Text>
+        <Text>Tienes 2 préstamos activos.</Text>
       </View>
 
       {/* Search and Date */}
@@ -46,24 +58,19 @@ const Home = () => {
         </View>
       </View>
 
-      {/* Nuevos */}
+      {/* Préstamos Activos */}
       <View style={{ paddingHorizontal: 20, marginBottom: 20 }}>
-        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Nuevos</Text>
+        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Tus Préstamos Activos</Text>
         <FlatList
-          data={ultimosPrestamos}
+          data={prestamosActivos}
           horizontal
           renderItem={({ item }) => (
             <TouchableOpacity style={{ marginRight: 10 }}>
-              <ImageBackground
-                source={{ uri: 'https://via.placeholder.com/150' }}
-                style={{ width: 150, height: 100, justifyContent: 'flex-end', borderRadius: 10, overflow: 'hidden' }}
-              >
-                <View style={{ padding: 10, backgroundColor: 'rgba(0,0,0,0.3)' }}>
-                  {item.plusIcon && <Text style={{ color: '#ffcc00', marginBottom: 5 }}>+5</Text>}
-                  <Text style={{ color: '#fff', fontWeight: 'bold' }}>{item.titulo}</Text>
-                  <Text style={{ color: '#fff' }}>{item.tipo}</Text>
-                </View>
-              </ImageBackground>
+              <View style={{ padding: 10, backgroundColor: '#fff', borderRadius: 10 }}>
+                <Text style={{ fontWeight: 'bold' }}>{item.nombre}</Text>
+                <Text>Prestado el: {item.fechaPrestamo}</Text>
+                <Text>Devolución: {item.fechaDevolucion}</Text>
+              </View>
             </TouchableOpacity>
           )}
           keyExtractor={item => item.id}
@@ -71,9 +78,28 @@ const Home = () => {
         />
       </View>
 
-      {/* Categorías */}
+      {/* Próximas Devoluciones */}
       <View style={{ paddingHorizontal: 20, marginBottom: 20 }}>
-        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Categorías</Text>
+        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Próximas Devoluciones</Text>
+        <FlatList
+          data={proximasDevoluciones}
+          horizontal
+          renderItem={({ item }) => (
+            <TouchableOpacity style={{ marginRight: 10 }}>
+              <View style={{ padding: 10, backgroundColor: '#fff', borderRadius: 10 }}>
+                <Text style={{ fontWeight: 'bold' }}>{item.titulo}</Text>
+                <Text>Devolución: {item.fechaDevolucion}</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+          keyExtractor={item => item.id}
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
+
+      {/* Categorías de Equipos */}
+      <View style={{ paddingHorizontal: 20, marginBottom: 20 }}>
+        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Categorías de Equipos</Text>
         <FlatList
           data={categorias}
           horizontal
@@ -98,30 +124,29 @@ const Home = () => {
         />
       </View>
 
-      {/* Culturales */}
+      {/* Equipos Populares */}
       <View style={{ paddingHorizontal: 20, marginBottom: 20 }}>
+        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Equipos Populares</Text>
         <FlatList
-          data={eventosCulturales}
+          data={equiposPopulares}
+          horizontal
           renderItem={({ item }) => (
-            <TouchableOpacity style={{ marginBottom: 10 }}>
+            <TouchableOpacity style={{ marginRight: 10 }}>
               <ImageBackground
-                source={{ uri: 'https://via.placeholder.com/150' }}
-                style={{ height: 100, justifyContent: 'flex-end', borderRadius: 10, overflow: 'hidden' }}
+                source={{ uri: item.urlImagen }}
+                style={{ width: 150, height: 100, justifyContent: 'flex-end', borderRadius: 10, overflow: 'hidden' }}
               >
                 <View style={{ padding: 10, backgroundColor: 'rgba(0,0,0,0.3)' }}>
-                  {item.plusIcon && <Text style={{ color: '#ffcc00', marginBottom: 5 }}>+5</Text>}
                   <Text style={{ color: '#fff', fontWeight: 'bold' }}>{item.titulo}</Text>
-                  <Text style={{ color: '#fff' }}>{item.fecha}</Text>
+                  <Text style={{ color: '#fff' }}>{item.categoria}</Text>
                 </View>
               </ImageBackground>
             </TouchableOpacity>
           )}
           keyExtractor={item => item.id}
+          showsHorizontalScrollIndicator={false}
         />
       </View>
-
-      {/* Bottom Navigation */}
-      
     </ScrollView>
   );
 };

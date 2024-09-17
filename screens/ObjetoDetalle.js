@@ -46,9 +46,12 @@ const ObjetoDetalle = ({ route, navigation }) => {
         {/* Mostrar la cantidad de objetos disponibles */}
       </View>
 
-      {/* Botón */}
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button}>
+     {/* Botón */}
+     <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('SolicitudPrestamo', { objeto })} // Navegar a la pantalla SolicitudPrestamo
+        >
           <Text style={styles.buttonText}>Solicitar Préstamo</Text>
         </TouchableOpacity>
       </View>

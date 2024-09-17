@@ -1,8 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation
+import HistorialPrestamos from './HistorialPrestamos';
 
 const Perfil = () => {
+  const navigation = useNavigation(); // Get navigation object
+
   return (
     <View style={styles.container}>
       {/* Header de perfil */}
@@ -34,7 +38,10 @@ const Perfil = () => {
 
       {/* Opciones de perfil */}
       <View style={styles.optionContainer}>
-        <TouchableOpacity style={styles.optionRow}>
+        <TouchableOpacity 
+          style={styles.optionRow}
+          onPress={() => navigation.navigate('HistorialPrestamos')} // Add onPress handler
+        >
           <Icon name="wallet-outline" size={24} color="#000" />
           <Text style={styles.optionText}>Mis préstamos</Text>
           <Icon name="chevron-forward-outline" size={24} color="#000" />
